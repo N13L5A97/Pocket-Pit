@@ -215,7 +215,7 @@ article:nth-of-type(2) > section div::after{
 }
 
 
-/* toggle switch */
+/* switch base*/
 article:last-of-type label{
     display: flex;
     justify-content: center;
@@ -233,6 +233,7 @@ article:last-of-type label{
     background-position: center left;
 }
 
+/* switch toggle */
 article:last-of-type label:before{
     content: '';
     position: absolute;
