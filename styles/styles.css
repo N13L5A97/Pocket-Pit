@@ -6,6 +6,7 @@
     --plate-color-secondary: #5D5C5C;
 
     --radar-color: rgba(1, 204, 0, 1);
+
 }
 
 *{
@@ -260,5 +261,32 @@ article:last-of-type label input{
 }
 
 article:last-of-type > div{
-    
+    position: absolute;
+    top: -2.4em;
+    right: 1em;
+    height: 2em;
+    width: 2.5em;
+    background-image:url(../assets/bolt.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom center;
+}
+
+/* led off */
+article:last-of-type > div::before{
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    height: 1.5em;
+    width: .8em;
+    border-radius: 1em;
+    background: linear-gradient(120deg, #ff3f3f, #a62020);
+    z-index: -1;
+}
+
+/* led on */
+article:last-of-type > label:has(input:checked) ~ div::before{
+    background: linear-gradient(120deg, #00ff00, #00a600);
 }
