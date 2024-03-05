@@ -76,6 +76,49 @@ article:first-of-type::after{
     z-index: 2;
 }
 
+/* wipers */
+
+article:first-of-type > img{
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    z-index: 2;
+    height: 75%;
+}
+
+article:first-of-type > img:first-of-type{
+    transform: translateX(-110%);
+    transform-origin: bottom left;
+    animation: wiperLeft 1s ease-in-out alternate infinite paused;
+}
+
+@keyframes wiperLeft{
+    from{
+        transform: translateX(-110%) rotate(0deg);
+    }
+
+    to{
+        transform: translateX(-110%) rotate(-121deg);
+    }
+}
+
+article:first-of-type > img:last-of-type{
+    transform: translateX(10%);
+    transform-origin: bottom right;
+    animation: wiperRight 1s ease-in-out alternate infinite paused;
+}
+
+@keyframes wiperRight{
+    from{
+        transform:translateX(10%) rotate(0deg);
+        
+    }
+
+    to{
+        transform: translateX(10%) rotate(121deg);
+    }
+}
+
 /* plate */
 
 article:nth-of-type(2){
@@ -290,4 +333,9 @@ article:last-of-type > div::before{
 /* led on */
 article:last-of-type > label:has(input:checked) ~ div::before{
     background: linear-gradient(120deg, #00ff00, #00a600);
+}
+
+/* window wipers toggle */
+section article:first-of-type:has(~ article:last-of-type input:checked) img {
+    animation-play-state: running;
 }
