@@ -61,7 +61,7 @@ article:first-of-type::before{
     background-image: url(../assets/clouds.jpeg);
     background-size: 200%;
     background-repeat: no-repeat;
-    background-position: var(--direction)"%";
+    background-position: calc(1% * var(--direction));
     border-radius: .25em;
     z-index: 1;
 }
