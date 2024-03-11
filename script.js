@@ -7,6 +7,8 @@ const updateRange = range => {
 	const rangeValue = range.value;
 	// a custom property is set on the HTML element
 	document.querySelector("article").style.setProperty("--"+rangeName, rangeValue);
+	document.getElementById("radar").style.setProperty("--"+rangeName, rangeValue);
+	
 }
 
 ranges.forEach(range => {
