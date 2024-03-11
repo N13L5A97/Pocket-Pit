@@ -24,10 +24,56 @@ For the design I wanted it to be clean and clear for the user. Not to many distr
 
 ### Breakdown
 
+To get started I make a breakdown for the elements. This helped me define the structure of the page.
+
+<img src="./docs/images/breakdown.png" height="200px">
 
 ### Techniques
 
 I think the main techniques that I will use are animations, background images, gradients, inputs (checkbox and range) and clip-paths. I will need the has selector and I will need to make use of before and after elements. Some challenges may lay with responsiveness and container queries. Also the has selector is completely new for me so that will probably take some more time.
+
+## Process Week 1
+
+### The Box
+
+- border gradient
+
+### The Window
+
+- reflection
+
+### Radar Plate
+
+- clippath
+
+#### Radar
+
+- radar animation
+- pulse animation
+
+### Switch
+
+- before
+- after
+- led
+
+#### Window Wipers
+
+- transform-origin
+
+## Process Week 2
+
+### Steering Wheel
+
+- javascript
+
+#### Window View
+
+- background image
+
+#### Radar Rotation
+
+- rotation
 
 
 <!-- Week 1 - Your plan
