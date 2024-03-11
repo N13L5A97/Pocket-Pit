@@ -58,7 +58,10 @@ article:first-of-type::before{
     left: 5px;
     right: 5px;
     bottom: 5px;
-    background: rgb(133, 208, 255);
+    background-image: url(../assets/clouds.jpeg);
+    background-size: 200%;
+    background-repeat: no-repeat;
+    background-position: var(--direction)"%";
     border-radius: .25em;
     z-index: 1;
 }
@@ -73,7 +76,7 @@ article:first-of-type::after{
     background-image: url(../assets/reflection.svg);
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: 0;
     z-index: 2;
 }
 
