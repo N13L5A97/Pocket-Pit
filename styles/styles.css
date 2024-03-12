@@ -160,8 +160,6 @@ article:nth-of-type(2) > img:last-of-type{
 }
 
 /* radar */
-/* https://www.plantcss.com/convert-svg-to-css-clip-path */
-/* https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/conic-gradient */
 
 article:nth-of-type(2) > section::before{
     content: "";
