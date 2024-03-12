@@ -36,7 +36,7 @@ To get started I made a breakdown for the elements. This helped me define the st
 
 The main techniques that I will be using are animations, background images, gradients, inputs (checkbox and range) and clip-paths. I will need the :has selector and I will need to make use of :before and :after elements. Some challenges may lay with responsiveness and container queries. Also the :has selector is completely new for me so that will probably take some more time.
 
-## Process Week 1
+## Process Week 2
 
 ### The Box
 
@@ -199,28 +199,224 @@ article:nth-of-type(2) > section div::before{
     min-height: 50%;
     min-width: 50%;
     border-radius: 100%;
-    background: conic-gradient(rgba(255,255,255,0) 0%, rgba(255,255,255,0) 75%,  var(--radar-color) 100%);
+    background: conic-gradient(rgba(255,255,255,0) 75%,  var(--radar-color) 100%);
 
     animation: radar 2s linear infinite;
 }
 ```
 
+The only thing that needed to be done was rotate the circle. If I wouldn't have added the translate function the rotation would have overwritten the position.
+
+```css
+@keyframes radar{
+    0%{
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100%{
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+```
+
+#### Radar Object
+
+I thought it would be fun if the radar would also detect something when scanning the area so I added a green dot every time the sensor would go over a specific area. With position absolute and top/left I positioned the object in the bottom right area of the radar. When looking at it I noticed it was exactly at 135°. It's 3/8 of the circle so 360/8*3=135. To make it easier for myself I made the objective animation just as long as the sensor animation (2 seconds).
+
+For the radar 360° is 100%. In 120s the sensor wil do 1 turn. 
+To find out the percentage of the object we have to make the same calculation as we did in the beginning but now a ful circle is not 360° but 100%:
+100/8*3 = 37,5%.
+
+Know I know that when the sensor arrives at 37,5% it "hits" the object. I want the object to be invisible until the sensor hits it so in the animation I make sure the opacity is 1 at 37%.
+
+I really like these small calculations.
+
+<img src="./docs/images/radar-animation.png" height="200">
+
+```css
+    > section div::after{
+        content: "";
+        position: absolute;
+        top: 60%;
+        left: 60%;
+    
+        min-height: 5%;
+        min-width: 5%;
+        aspect-ratio: 1/1;
+        border-radius: 100%;
+        background: radial-gradient(rgba(255,255,255,0) 0%,  var(--radar-color) 100%);
+    
+        animation: objective 2s ease-out infinite;
+    }
+
+@keyframes objective{
+    0%{
+        opacity: 1;
+    }
+
+    37%{
+        opacity: 0;
+    }
+
+    40%{
+
+        opacity: 1;
+    }
 
 
-- radar animation
-- pulse animation
+    100%{
+        opacity: 1;
+    }
+}
+```
 
 ### Switch
 
-- before
-- after
-- led
+I wanted to create a realistic airplane switch to toggle the window wipers. I also wanted this to have a little LED as a little extra. I knew this was going to be a challenge because of the usage of the :has selector. This was really fun to do. I divided the switch itself in to 2 pieces. The base and the toggle.
+I placed the base on the label with a background image and placed this on the side of the box with position absolute. The toggle was placed on a the before element of the label so I could rotate this when the switch was toggled on. I had to use transform-origin to make sure the toggle would rotate on from the left and not the center.
+
+<img src="./docs/images/switch.png" height="100">
+
+```css
+article:last-of-type{
+    & label input{
+        display: none;
+    }
+
+    /* switch base */
+    & label{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+        position: absolute;
+        right: -4.3em;
+        top: 1em;
+        height: 3em;
+        width: 4em;
+    
+        background-image: url(../assets/switchBolt.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center left;
+    
+        cursor: pointer;
+    }
+
+    /* switch toggle */
+    & label:before{
+        content: '';
+        height: 100%;
+        width: 2.8em;
+
+        position: absolute;
+        top: -2px;
+        left: 1em;
+        z-index: -1;
+
+        background-image: url(../assets/toggle.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center left;
+    
+        transform-origin: left center;
+        transform: rotate(20deg);
+        transition: transform .3s;
+    }
+```
+
+#### LED
+
+The LED was also build into 2 pieces. The base of the LED is an svg image and I used the before element to create the LED itself and place it behind the bolt. I gave the initial color a red gradient since the switch is turned off at first.
+
+<img src="./docs/images/led.png" height="100">
+
+```css
+    /* led */
+    > div{
+        height: 2em;
+        width: 2.5em;
+
+        position: absolute;
+        top: -2.4em;
+        right: 1em;
+
+        background-image:url(../assets/bolt.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: bottom center;
+    }
+
+    /* led off */
+    > div::before{
+        content: '';
+        height: 1.5em;
+        width: .8em;
+
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        z-index: -1;
+
+        transform: translateX(-50%);
+        border-radius: 1em;
+        background: linear-gradient(var(--led-color, 120deg, #ff3f3f, #a62020 ));
+    }
+}
+```
 
 #### Window Wipers
 
-- transform-origin
+The last thing I worked on this week were the window wipers. At first I added 1 image, duplicated and transformed the scale X to flip the image, but later on I got stuck when animating the wipers. So therefor I just added another image which already had the right angle to get rid of this problem. I made both images the same height and calculated their position from the middle individually. I gave them both another origin to make sure the rotation would be correctly.
 
-## Process Week 2
+```css
+/* wipers */
+    > img{
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        z-index: 2;
+        height: 75%;
+    }
+
+    > img:first-of-type{
+        transform: translateX(-110%);
+        transform-origin: bottom left;
+        animation: wiperLeft 1s ease-in-out alternate infinite paused;
+    }
+
+    > img:last-of-type{
+        transform: translateX(10%);
+        transform-origin: bottom right;
+        animation: wiperRight 1s ease-in-out alternate infinite paused;
+    }
+```
+
+I made a little typo in the animation, where I rotated the image before translating it which fucked up the transform origin. Nils helped me figure this out. After that the animation worked perfectly.
+
+```css
+@keyframes wiperLeft{
+    from{
+        transform: translateX(-110%) rotate(0deg);
+    }
+
+    to{
+        transform: translateX(-110%) rotate(-121deg);
+    }
+}
+
+@keyframes wiperRight{
+    from{
+        transform:translateX(10%) rotate(0deg);
+        
+    }
+
+    to{
+        transform: translateX(10%) rotate(121deg);
+    }
+}
+```
+
+## Process Week 3
 
 ### Steering Wheel
 
@@ -234,6 +430,9 @@ article:nth-of-type(2) > section div::before{
 
 - rotation
 
+### CSS Nesting
+
+### Style Queries
 
 ## Resources
 
@@ -241,14 +440,9 @@ article:nth-of-type(2) > section div::before{
 - [Conic Gradient](https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/conic-gradient)
 - [Range Slider](https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/)
 
-<!-- Week 1 - Your plan
-- Your assignment choice, and the options you select.
-- Which CSS techniques will you start with?
-- Where do your (major) challenges lie?
-- Include sketch(es) of your design.
-- Perhaps also create an initial breakdown sketch.
 
-Week 2 & 3 - Progress
+
+<!-- Week 2 & 3 - Progress
 - Show your progress (text, code and pictures).
 - What went smoothly, and what was challenging?
 - What experiments did you conduct that 'failed'?
@@ -264,4 +458,4 @@ most proud of?
 - What experiments did you conduct that 'failed'?
 - Do you have new insights into how to leverage the power of CSS
 (or not)?
-- What do you want to explore further? -->
+- What do you want to explore further?  -->

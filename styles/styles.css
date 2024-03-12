@@ -208,7 +208,7 @@ article:nth-of-type(2){
     min-height: 50%;
     min-width: 50%;
     border-radius: 100%;
-    background: conic-gradient(rgba(255,255,255,0) 0%, rgba(255,255,255,0) 75%,  var(--radar-color) 100%);
+    background: conic-gradient(rgba(255,255,255,0) 75%,  var(--radar-color) 100%);
 
     animation: radar 2s linear infinite;
     }
