@@ -101,29 +101,6 @@ article:first-of-type::after{
     z-index: 2;
 }
 
-/* wipers animation */
-
-@keyframes wiperLeft{
-    from{
-        transform: translateX(-110%) rotate(0deg);
-    }
-
-    to{
-        transform: translateX(-110%) rotate(-121deg);
-    }
-}
-
-@keyframes wiperRight{
-    from{
-        transform:translateX(10%) rotate(0deg);
-        
-    }
-
-    to{
-        transform: translateX(10%) rotate(121deg);
-    }
-}
-
 /* plate */
 
 article:nth-of-type(2){
@@ -253,40 +230,6 @@ article:nth-of-type(2){
     }
 }
 
-
-
-
-/* radar animations */
-
-@keyframes radar{
-    0%{
-        transform: translate(-50%, -50%) rotate(0deg);
-    }
-    100%{
-        transform: translate(-50%, -50%) rotate(360deg);
-    }
-}
-
-@keyframes objective{
-    0%{
-        opacity: 1;
-    }
-
-    37%{
-        opacity: 0;
-    }
-
-    40%{
-
-        opacity: 1;
-    }
-
-
-    100%{
-        opacity: 1;
-    }
-}
-
 /* steering wheel */
 
 /* slider */
@@ -394,7 +337,7 @@ article:last-of-type{
 
 }
 
-/* switches */
+/* Switch interactions */
 
 html:has([value="switch"]:checked) {
 	--switch:true;
@@ -414,5 +357,60 @@ html:has([value="switch"]:checked) {
             transform: rotate(-20deg);
             transition: transform .3s;
         }
+    }
+}
+
+/* Animations */
+/* wipers animation */
+
+@keyframes wiperLeft{
+    from{
+        transform: translateX(-110%) rotate(0deg);
+    }
+
+    to{
+        transform: translateX(-110%) rotate(-121deg);
+    }
+}
+
+@keyframes wiperRight{
+    from{
+        transform:translateX(10%) rotate(0deg);
+        
+    }
+
+    to{
+        transform: translateX(10%) rotate(121deg);
+    }
+}
+
+/* radar animations */
+
+@keyframes radar{
+    0%{
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100%{
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@keyframes objective{
+    0%{
+        opacity: 1;
+    }
+
+    37%{
+        opacity: 0;
+    }
+
+    40%{
+
+        opacity: 1;
+    }
+
+
+    100%{
+        opacity: 1;
     }
 }
