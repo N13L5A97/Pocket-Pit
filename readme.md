@@ -239,6 +239,7 @@ article:nth-of-type(2) > section div::before{
 
 - [SVG to Clip-path ](https://www.plantcss.com/convert-svg-to-css-clip-path)
 - [Conic Gradient](https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/conic-gradient)
+- [Range Slider](https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/)
 
 <!-- Week 1 - Your plan
 - Your assignment choice, and the options you select.
