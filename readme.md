@@ -707,7 +707,7 @@ I wanted the dark mode to be a little different than usual. In this case the dar
 
 #### The Button
 
-I used a checkbox as starting point and put the input on hidden. I used a clippath to give the button a 3d effect. To make sure people would understand the button I placed a moon emoji on top of it. I also wanted to give the user feedback when pressing this (fake) button. So I added a transition on the checked state and translated the position 1 pixel down.
+I used a checkbox as starting point and put the input on hidden. I used a clip-path to give the button a 3d effect. To make sure people would understand the button I placed a moon emoji on top of it. I also wanted to give the user feedback when pressing this (fake) button. So I added a transition on the checked state and translated the position 1 pixel down.
 
 ```css
 /* back of button */
@@ -784,7 +784,7 @@ I used a div after the checkbox to add a little led that shows the user if it is
 
 #### Change Elements
 
-I used style queries to change the elements when the button is pressed. I wanted to change the image in the window to night but I didn not have the same image in a different time so I thought of filters to give people the impression it is night. I also added the button transition in this style query and made the led green.
+I used style queries to change the elements when the button is pressed. I wanted to change the image in the window to night but I didn't not have the same image in a different time so I thought of filters to give people the impression it is night. I also added the button transition in this style query and made the led green.
 
 
 ```css
