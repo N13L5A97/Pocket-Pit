@@ -76,7 +76,7 @@ article:first-of-type {
         align-items: center;
 
         height: 2.5rem;
-        width: 45%;
+        width: 50%;
         padding: 0.5em;
 
         background-color: var(--background-color);
@@ -885,10 +885,10 @@ html:has([value="darkmode"]:checked) {
 /* move title from right to left*/
 @keyframes title {
     from {
-        transform: translateX(110%);
+        transform: translateX(150%);
     }
     to {
-        transform: translateX(-110%);
+        transform: translateX(-150%);
     }
 }
 
