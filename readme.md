@@ -646,6 +646,15 @@ The last week I finalized my project. I added a Dark/Light mode and a title and 
 
 ### Title
 
+I wanted the title to be a digital element and not just text on a surface. I looked up some inspiration and found a cool Codepen and an image of a cockpit terminal that I used as inspiration.
+
+<img src="./docs/images/airport-info.png" height="150">
+<img src="./docs/images/terminal.png" height="150">
+
+I looked for a monospace font to mimic a terminal font. I went for Courier Prime Bold. I set the title wrapper on display hidden so when I animate the position it will create a reveal effect. This was pretty easy to do with translateX.
+
+<img src="./docs/images/title.png" height="150">
+
 ```css
 /* title */
 > div:first-of-type {
@@ -680,19 +689,171 @@ The last week I finalized my project. I added a Dark/Light mode and a title and 
 }
 ```
 
+```css
+/* move title from right to left*/
+@keyframes title {
+    from {
+        transform: translateX(110%);
+    }
+    to {
+        transform: translateX(-110%);
+    }
+}
+```
+
 ### Dark/Light Mode
+
+I wanted the dark mode to be a little different than usual. In this case the dark mode does not really effect the webpage, but the weather outside of the cockpit. It changes the image to day or light. I also wanted to create the button using pure html and css, no svg's.
+
+#### The Button
+
+I used a checkbox as starting point and put the input on hidden. I used a clippath to give the button a 3d effect. To make sure people would understand the button I placed a moon emoji on top of it. I also wanted to give the user feedback when pressing this (fake) button. So I added a transition on the checked state and translated the position 1 pixel down.
+
+```css
+/* back of button */
+> label:first-of-type {
+    position: relative;
+    display: block;
+
+    width: 2rem;
+    height: 2rem;
+
+    border-radius: 50%;
+    background-color: var(--button-shade);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+
+    transition: transform 0.1s;
+
+    /* top of button */
+    &:before {
+        content: "";
+        position: absolute;
+
+        height: inherit;
+        width: inherit;
+
+        border-radius: inherit;
+        background-color: var(--button-color);
+        clip-path: circle(50% at 50% 40%);
+    }
+
+    /* moon emoji */
+    &:after {
+        content: "🌙";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -60%);
+
+        font-size: 1rem;
+    }
+
+    > input {
+        display: none;
+    }
+
+    /* move the button down when clicked */
+    &:has(input:checked) {
+        transform: translateY(1px);
+
+        box-shadow: none;
+        transition: transform 0.1s;
+    }
+}
+```
+
+#### The LED
+
+I used a div after the checkbox to add a little led that shows the user if it is turned on or not. I had to place it outside of the label because I dod not want the led to move when the button was pressed. I could also have used the not :not selector for this but I already had a before and after element.
+
+```css
+/* led */
++ div {
+    position: absolute;
+    right: 0;
+    top: 0.5rem;
+    display: block;
+
+    height: 0.5rem;
+    width: 0.5rem;
+
+    border-radius: 50%;
+    background-color: var(--color-off);
+}
+```
+
+#### Change Elements
+
+I used style queries to change the elements when the button is pressed. I wanted to change the image in the window to night but I didn not have the same image in a different time so I thought of filters to give people the impression it is night. I also added the button transition in this style query and made the led green.
+
+
+```css
+html:has([value="darkmode"]:checked) {
+    --darkmode: true;
+}
+
+@container style(--darkmode:true) {
+    article:nth-of-type(2)::before {
+        filter: invert(1) grayscale(0.8) contrast(1.2) brightness(0.8);
+        transition: filter 0.3s;
+    }
+
+    article:first-of-type > div:last-of-type > label:first-of-type{
+        transform: translateY(1px);
+
+        box-shadow: none;
+        transition: transform 0.1s;
+    }
+
+    article:first-of-type > div:last-of-type > label:first-of-type + div {
+        background-color: var(--color-on);
+    }
+}
+```
+
+<img src="./docs/images/light.png" height="150">
+<img src="./docs/images/dark.png" height="150">
+
+### Final Touches
+
+I did some final touches like changing the image in the window to a gif so it looks like the plane is actually moving. I also added reduces motion. I made sure all animations are paused and only the window wipers can be put on but are slower than on default. Here I also replace the gif with a still image.
+
+## The Result
+
+This is the final result of my project called The Pocket Pit N-97. I really love the outcome and I learned a lot of new tricks this course.
+
+<img src="./docs/images/final.png" height="300">
+<video src="./docs/images/finalVid.mov" height="300" controls>
+
+### Overall Process
+
+I am really proud of all the elements that I have used. I learned a lot about selectors like :has, nesting and style queries but also cool new tricks like clip-paths, image-masks, transform-origin, filters and animations.
+
+Some challenges where finding the right way to layer things. I had a lot of trouble with an gradient-borders, responsiveness and minor - but crucial - typos, but with a lot of research and trying I figured everything out.
+
+I loved to learn about nesting and style queries and variables this gave me a lot of new ways to use CSS. I have seen a lot of work from people that inspired me. This project I wanted to focus a little more on functionality but I'd love to make some elements with just css in stead of svg's. I would also want to dive into container queries to maybe extend this Pocket Pit with more panels.
 
 ## Resources
 
-- [SVG to Clip-path](https://www.plantcss.com/convert-svg-to-css-clip-path)
+- [:has](https://tobiasahlin.com/blog/previous-sibling-css-has/)
+- [Airport info](https://codepen.io/jesuskinto/pen/wvJeVez?editors=0110)
+- [Animation Direction](https://developer.mozilla.org/en-US/docs/Web/CSS/animation-direction)
+- [Ceaser Easing Tool](https://matthewlein.com/tools/ceaser)
+- [Clippy](https://bennettfeely.com/clippy/)
+- [Clouds Gif](https://i.pinimg.com/originals/d7/e7/81/d7e781b32269a8a82b500c1a9dc97733.gif)
 - [Conic Gradient](https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/conic-gradient)
+- [Courier Prime Bold](https://fonts.google.com/specimen/Courier+Prime?preview.text=CAPS%20SMALL&classification=Monospace)
+- [CSS Pattern Gallery](https://projects.verou.me/css3patterns/#blueprint-grid)
+- [CSS Selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors)
+- [Cutouts](https://css-tricks.com/cutouts/)
+- [Filters](https://css-tricks.com/apply-a-filter-to-a-background-image/)
+- [Gradient Border](https://css-tricks.com/gradient-borders-in-css/)
+- [Image Mask](https://developer.mozilla.org/en-US/docs/Web/CSS/mask-image)
+- [Image Spacing](https://albertwalicki.com/learn/solutions/extra-space-below-image)
+- [Linear-Gradient](https://www.browserstack.com/guide/sibling-selectors-in-css)
+- [Range Input Script](https://codepen.io/shooft/pen/LYaexbj)
 - [Range Slider](https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/)
-
-<!-- Week 4 - Completion
-- Discuss your final result (text, code and pictures).
-- What went smoothly, what was challenging, and what are you
-most proud of?
-- What experiments did you conduct that 'failed'?
-- Do you have new insights into how to leverage the power of CSS
-(or not)?
-- What do you want to explore further?  -->
+- [Sibling Selector](https://www.browserstack.com/guide/sibling-selectors-in-css)
+- [Scale Clip-path](https://css-tricks.com/scaling-svg-clipping-paths-css-use/)
+- [SVG to Clip-path](https://www.plantcss.com/convert-svg-to-css-clip-path)
+- [White Space](https://developer.mozilla.org/en-US/docs/Web/CSS/white-space)
