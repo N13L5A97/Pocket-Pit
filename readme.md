@@ -222,7 +222,7 @@ The only thing that needed to be done was rotate the circle. If I wouldn't have 
 
 I thought it would be fun if the radar would also detect something when scanning the area so I added a green dot every time the sensor would go over a specific area. With position absolute and top/left I positioned the object in the bottom right area of the radar. When looking at it I noticed it was exactly at 135°. It's 3/8 of the circle so 360/8*3=135. To make it easier for myself I made the objective animation just as long as the sensor animation (2 seconds).
 
-For the radar 360° is 100%. In 120s the sensor wil do 1 turn. 
+For the radar 360° is 100%. In 120s the sensor wil do 1 turn.
 To find out the percentage of the object we have to make the same calculation as we did in the beginning but now a ful circle is not 360° but 100%:
 100/8*3 = 37,5%.
 
@@ -420,38 +420,275 @@ I made a little typo in the animation, where I rotated the image before translat
 
 ### Steering Wheel
 
-- javascript
+This week I started with making the steering wheel. I wanted it to change position of the window background image but also rotate the radar in the right direction. I started with building the slider.
+I made an svg of the steering wheel that I could put on the slider thumb. I had to look up the basics of styling a slider but got the hand of it really quickly. I struggled a bit with making the thumb overlap the slide area but that was fixable with some negative margin.
+
+<img src="./docs/images/wheel.png" height="200">
+
+```css
+article:nth-of-type(4) {
+    /* slider */
+    & input[type="range"] {
+        -webkit-appearance: none;
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
+        width: 80%;
+        background: black;
+        border-radius: 0.5em;
+        z-index: 3;
+    }
+    /* slider thumb (steering wheel) */
+    & input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 10em;
+        height: 8em;
+        margin-top: -6em;
+        background-image: url(../assets/images/steeringWheel.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        cursor: grab;
+    }
+
+    & input[type="range"]::-webkit-slider-thumb:active {
+        cursor: grabbing;
+    }
+}
+```
+
+#### Getting the Slider Value
+
+I used the Javascript file from Sanne to receive the value of the slider and put this on the html.
+
+```js
+const ranges = document.querySelectorAll('[type="range"]');
+
+const updateRange = range => {
+ // the name of the custom property is the name of the input
+ const rangeName = range.name;
+ // the value of the custom property is the value of the input
+ const rangeValue = range.value;
+ // a custom property is set on the HTML element
+ document.documentElement.style.setProperty("--"+rangeName, rangeValue); 
+}
+
+ranges.forEach(range => {
+ // the custom property is set initially after loading the document
+ updateRange(range);
+ 
+ // the custom property is updated when the input is changed
+ range.oninput = () => {
+  updateRange(range)
+ };
+});
+```
+
+I gave the slider the name "direction". Now the Javascript will take this name and give the html the attribute "direction" with the value of the slider. In css in can now use this value.
+
+```html
+<label>
+    <input type="range" min="0" max="100" value="50" name="direction">
+</label>
+
+```
 
 #### Window View
 
-- background image
+In the css I give the background position the percentage of the value of the slider. With 0% being left and 100% is the right.
+
+```css
+    /* window background */
+    &::before {
+        background-position: calc(1% * var(--direction));
+    }
+```
 
 #### Radar Rotation
 
-- rotation
+I also wanted te radar to turn when the user is steering. I put the direction into the transform rotation. Here I say it should calculate the amount of rotation. I only want it to rotate 180 degrees and it should be inverted. 180/100 is 1.8 degrees per "step" but negative = -1.8 degrees. Since the middle of the slider is 50% we have put it 180 degrees back. Now on 50% of the slider it will be at 0 degrees. At 0% it will be 270 and at 100% it will be 90 degrees.
+
+<img src="./docs/images/radar-direction.png" height="200">
+
+```css
+/* radar image */
+        & > div {
+            transform: rotate(calc(-1.8deg * var(--direction) - 180deg));
+        }
+```
 
 ### CSS Nesting
 
+One of the techniques I wanted to use is CSS Nesting I had heard of this in SASS but didn't know it was also available in CSS now. I think I may have nested a little to much but I wanted to nest all the elements of the box. At first I had some trouble understanding why it wouldn't work but I figured I had to use the "&" symbol. I also put :before and :after elements outside of the elements at first but fixed this as well with the "&" symbol later.
+
+I tried making it a but more readable with some comments. My code looks a bit like this.
+
+```css
+/* the window */
+article:nth-of-type(2) {
+    position: relative;
+    height: 100px;
+    width: 100%;
+
+    background: linear-gradient(90deg, #fffcfc, #9f9f9f);
+    border-radius: 0.25em;
+
+    /* wipers */
+    > img {
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        z-index: 2;
+        height: 75%;
+    }
+
+    > img:first-of-type {
+        transform: translateX(-110%);
+        transform-origin: bottom left;
+        animation: wiperLeft 1s ease-in-out alternate infinite paused;
+    }
+
+    > img:last-of-type {
+        transform: translateX(10%);
+        transform-origin: bottom right;
+        animation: wiperRight 1s ease-in-out alternate infinite paused;
+    }
+
+    /* window background */
+    &::before {
+        content: "";
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+        z-index: 1;
+
+        background-image: url(../assets/images/clouds.gif);
+        background-size: 200%;
+        background-repeat: no-repeat;
+        background-position: calc(1% * var(--direction));
+
+        border-radius: 0.25em;
+        filter: var(--filter);
+        transition: filter 0.3s;
+    }
+
+    /* window reflection */
+    &::after {
+        content: "";
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+        z-index: 2;
+
+        background-image: url(../assets/images/reflection.svg);
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-position: 0;
+
+        filter: blur(2px) opacity(0.8);
+    }
+}
+```
+
 ### Style Queries
+
+At first I use selectors to make sure when a checkbox was checked somethings would happen. I wanted to use style queries to fix this and make it more clear for people to read. I added a value to the checkboxes (in this case for the window wipers). With has I check if the html has a value "wipers" checked. Then I make a variable true. With the style query I can now say that if this variable is true do the following. In this case I say that the window wipers animation should be running and the led should be green.
+
+```css
+/* Switch interactions */
+
+html:has([value="wipers"]:checked) {
+    --wipers: true;
+}
+
+@container style(--wipers:true) {
+    /* animate wipers */
+    section article:nth-of-type(2) img:first-of-type, section article:nth-of-type(2) img:last-of-type {
+        animation-play-state: running;
+    }
+
+    /* make led green */
+    article:last-of-type {
+        > label ~ div::before {
+            --led-color: 120deg, #1bff1b, var(--color-on);
+        }
+
+        & label::before {
+            transform: rotate(-20deg);
+            transition: transform 0.3s;
+        }
+    }
+}
+```
+
+## Process Week 4
+
+The last week I finalized my project. I added a Dark/Light mode and a title and cleaned up my code.
+
+```html
+<article>
+    <div>
+        <h1>Pocket Pit N-97</h1>
+    </div>
+    <div>
+        <label>
+            <span>🌙</span>
+            <input type="checkbox" value="darkmode">
+        </label>
+        <div></div>
+    </div>
+</article>
+```
+
+### Title
+
+```css
+/* title */
+> div:first-of-type {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    height: 2.5rem;
+    width: 45%;
+    padding: 0.5em;
+
+    background-color: var(--background-color);
+    color: var(--radar-color);
+
+    border-radius: 0.25em;
+    overflow: hidden;
+
+    > h1 {
+        position: absolute;
+        left: 1em;
+        display: block;
+
+        font-family: var(--font-family);
+        text-transform: uppercase;
+        white-space: nowrap;
+
+        animation: 5s title infinite linear;
+        animation-delay: 1s;
+
+        filter: drop-shadow(0 0 0.5em var(--radar-color));
+    }
+}
+```
+
+### Dark/Light Mode
 
 ## Resources
 
-- [SVG to Clip-path ](https://www.plantcss.com/convert-svg-to-css-clip-path)
+- [SVG to Clip-path](https://www.plantcss.com/convert-svg-to-css-clip-path)
 - [Conic Gradient](https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/conic-gradient)
 - [Range Slider](https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/)
 
-
-
-<!-- Week 2 & 3 - Progress
-- Show your progress (text, code and pictures).
-- What went smoothly, and what was challenging?
-- What experiments did you conduct that 'failed'?
-- Do you have new insights into how to leverage the power of CSS
-(or not)?
-- Incorporate changes to your initial plan.
-- The challenges for next week.
-
-Week 4 - Completion
+<!-- Week 4 - Completion
 - Discuss your final result (text, code and pictures).
 - What went smoothly, what was challenging, and what are you
 most proud of?

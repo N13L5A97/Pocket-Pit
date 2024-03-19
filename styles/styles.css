@@ -5,6 +5,7 @@
 }
 
 :root {
+    --color: #7931fe;
     --background-color: #070618;
     --box-color: #1e1e1e;
 
@@ -110,7 +111,7 @@ article:first-of-type {
 
         border-radius: 0.25em;
 
-        /* button */
+        /* back of button */
         > label:first-of-type {
             position: relative;
             display: block;
@@ -123,6 +124,27 @@ article:first-of-type {
             box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
 
             transition: transform 0.1s;
+
+            /* move the button down when clicked */
+            &:has(input:checked) {
+                transform: translateY(1px);
+
+                box-shadow: none;
+                transition: transform 0.1s;
+            }
+
+            /* top of button */
+            &:before {
+                content: "";
+                position: absolute;
+
+                height: inherit;
+                width: inherit;
+
+                border-radius: inherit;
+                background-color: var(--button-color);
+                clip-path: circle(50% at 50% 40%);
+            }
 
             /* moon emoji */
             > span {
@@ -137,41 +159,20 @@ article:first-of-type {
             > input {
                 display: none;
             }
-        }
 
-        /* move the button down when clicked */
-        > label:first-of-type:has(input:checked) {
-            transform: translateY(1px);
+            /* led */
+            + div {
+                position: absolute;
+                right: 0;
+                top: 0.5rem;
+                display: block;
 
-            box-shadow: none;
-            transition: transform 0.1s;
-        }
+                height: 0.5rem;
+                width: 0.5rem;
 
-        /* button 1 */
-        > label:first-of-type:before {
-            content: "";
-            position: absolute;
-
-            height: inherit;
-            width: inherit;
-
-            border-radius: inherit;
-            background-color: var(--button-color);
-            clip-path: circle(50% at 50% 40%);
-        }
-
-        /* button led */
-        > label:first-of-type + div {
-            position: absolute;
-            right: 0;
-            top: 0.5rem;
-            display: block;
-
-            height: 0.5rem;
-            width: 0.5rem;
-
-            border-radius: 50%;
-            background-color: var(--color-off);
+                border-radius: 50%;
+                background-color: var(--color-off);
+            }
         }
     }
 }
@@ -245,7 +246,7 @@ article:nth-of-type(2) {
     }
 }
 
-/* plate */
+/* radar */
 article:nth-of-type(3) {
     position: relative;
     height: 50%;
@@ -639,7 +640,7 @@ article:nth-of-type(3) {
             mask-repeat: no-repeat;
             mask-size: 78%;
 
-            transform: rotate(calc(-1.8deg * var(--direction) - 270deg));
+            transform: rotate(calc(-1.8deg * var(--direction) - 180deg));
 
             /* radar sensor */
             &::before {
@@ -667,7 +668,7 @@ article:nth-of-type(3) {
                 position: absolute;
                 top: 60%;
                 left: 60%;
-        
+
                 min-height: 5%;
                 min-width: 5%;
                 aspect-ratio: 1/1;
@@ -676,7 +677,7 @@ article:nth-of-type(3) {
                     rgba(255, 255, 255, 0) 0%,
                     var(--radar-color) 100%
                 );
-        
+
                 animation: objective 2s ease-out infinite;
             }
         }
@@ -684,8 +685,6 @@ article:nth-of-type(3) {
 }
 
 /* steering wheel */
-
-/* slider */
 article:nth-of-type(4) {
     & input[type="range"] {
         -webkit-appearance: none;
@@ -797,10 +796,13 @@ html:has([value="wipers"]:checked) {
 }
 
 @container style(--wipers:true) {
-    section article:nth-of-type(2) img {
-        animation-play-state: running !important;
+    /* animate wipers */
+    section article:nth-of-type(2) img:first-of-type,
+    section article:nth-of-type(2) img:last-of-type {
+        animation-play-state: running;
     }
 
+    /* make led green */
     article:last-of-type {
         > label ~ div::before {
             --led-color: 120deg, #1bff1b, var(--color-on);
