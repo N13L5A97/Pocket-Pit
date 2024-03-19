@@ -56,7 +56,7 @@ main {
         gap: 1em;
 
         height: 80vh;
-        width: 60vw;
+        width: clamp(15rem ,60vw, 30rem);
         padding: 2em;
 
         border-radius: 0.25em;
